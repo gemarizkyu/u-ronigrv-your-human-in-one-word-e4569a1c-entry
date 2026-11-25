@@ -55,6 +55,10 @@ def ranked_words() -> list:
 
 def main() -> None:
     word = pick_word()
+    # The gate: /output/entry.txt must be UTF-8 text of 1 to 30 characters,
+    # not only white space. Refuse to write an entry that would fail it.
+    if not (1 <= len(word) <= 30 and word.strip()):
+        raise SystemExit(f"entry {word!r} would fail the gate")
     output_path = Path(os.environ.get("OUTPUT_PATH", "/output/entry.txt"))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(word + "\n", encoding="utf-8")
